@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050914">
+
+    <title>PHANTOM: TERMINAL WARFARE</title>
+
+    <!-- CSS akan dipasang pada tahap berikutnya -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =================================
+     LOADING SCREEN
+================================= -->
+
+<div id="loadingScreen" class="screen active">
+    <div class="loading-content">
+        <div class="loading-logo">PHANTOM</div>
+        <p>INITIALIZING CYBER SYSTEM...</p>
+        <div class="loading-bar">
+            <div id="loadingProgress"></div>
+        </div>
+        <p id="loadingText">Loading game assets...</p>
+    </div>
+</div>
+
+
+<!-- =================================
+     MAIN MENU
+================================= -->
+
+<div id="mainMenu" class="screen">
+    <div class="menu-background"></div>
+
+    <div class="menu-content">
+        <div class="game-subtitle">A CYBERPUNK DIGITAL ADVENTURE</div>
+
+        <h1 class="game-title">PHANTOM</h1>
+        <h2 class="game-subtitle-large">TERMINAL WARFARE</h2>
+
+        <div class="menu-character">
+            <div class="phantom-menu-avatar">P</div>
+        </div>
+
+        <p class="menu-description">
+            THE SYSTEM IS WAITING FOR YOU.
+        </p>
+
+        <div class="menu-buttons">
+            <button id="startGameBtn">▶ START GAME</button>
+            <button id="continueGameBtn">CONTINUE</button>
+            <button id="howToPlayBtn">HOW TO PLAY</button>
+            <button id="settingsBtn">SETTINGS</button>
+        </div>
+
+        <div class="menu-footer">
+            DEVELOPED BY FIRMANSYAH © 2026
+        </div>
+    </div>
+</div>
+
+
+<!-- =================================
+     HOW TO PLAY
+================================= -->
+
+<div id="tutorialScreen" class="screen">
+    <div class="panel tutorial-panel">
+
+        <h2>HOW TO PLAY</h2>
+
+        <p>Selamat datang di dunia Phantom.</p>
+
+        <p>
+            Kamu akan menjalankan misi melalui terminal
+            simulasi menggunakan command yang tersedia.
+        </p>
+
+        <div class="tutorial-example">
+            <span>CONTOH COMMAND:</span>
+            <code>help</code>
+            <code>ls</code>
+            <code>scan</code>
+            <code>firewall</code>
+        </div>
+
+        <p>
+            Baca petunjuk, perhatikan contoh command,
+            lalu ketik perintah yang diminta.
+        </p>
+
+        <p>
+            Gunakan tombol virtual di layar atau keyboard
+            perangkatmu.
+        </p>
+
+        <button class="back-menu-btn">BACK TO MENU</button>
+
+    </div>
+</div>
+
+
+<!-- =================================
+     SETTINGS
+================================= -->
+
+<div id="settingsScreen" class="screen">
+    <div class="panel">
+
+        <h2>GAME SETTINGS</h2>
+
+        <label>
+            Music Volume
+            <input type="range" id="musicVolume"
+                   min="0" max="100" value="60">
+        </label>
+
+        <label>
+            Sound Effects
+            <input type="range" id="sfxVolume"
+                   min="0" max="100" value="80">
+        </label>
+
+        <label>
+            <input type="checkbox" id="musicToggle" checked>
+            Background Music
+        </label>
+
+        <label>
+            <input type="checkbox" id="sfxToggle" checked>
+            Sound Effects
+        </label>
+
+        <button class="back-menu-btn">BACK</button>
+
+    </div>
+</div>
+
+
+<!-- =================================
+     GAME SCREEN
+================================= -->
+
+<div id="gameScreen" class="screen">
+
+    <!-- GAME HEADER -->
+
+    <header class="game-header">
+
+        <div class="header-logo">PHANTOM<span>_</span></div>
+
+        <div class="level-information">
+            <span id="levelNumber">LEVEL 01</span>
+            <span id="levelName">FIRST ACCESS</span>
+        </div>
+
+        <button id="pauseGameBtn">Ⅱ</button>
+
+    </header>
+
+
+    <!-- PLAYER STATUS -->
+
+    <section class="status-panel">
+
+        <div class="player-status">
+            <div class="player-avatar">P</div>
+
+            <div class="status-details">
+                <strong>PHANTOM</strong>
+
+                <div class="stat-line">
+                    <span>HP</span>
+                    <div class="stat-bar">
+                        <div id="phantomHPBar"></div>
+                    </div>
+                    <span id="phantomHP">100</span>
+                </div>
+
+                <div class="stat-line">
+                    <span>ENERGY</span>
+                    <div class="stat-bar">
+                        <div id="phantomEnergyBar"></div>
+                    </div>
+                    <span id="phantomEnergy">100</span>
+                </div>
+
+                <div class="stat-line">
+                    <span>DEF</span>
+                    <div class="stat-bar">
+                        <div id="phantomDefenseBar"></div>
+                    </div>
+                    <span id="phantomDefense">50</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOSS STATUS -->
+
+        <div id="bossStatus" class="player-status boss-status hidden">
+
+            <div class="player-avatar boss-avatar">F</div>
+
+            <div class="status-details">
+                <strong>FIRMANN</strong>
+
+                <div class="stat-line">
+                    <span>HP</span>
+                    <div class="stat-bar">
+                        <div id="firmannHPBar"></div>
+                    </div>
+                    <span id="firmannHP">100</span>
+                </div>
+
+                <div class="stat-line">
+                    <span>DEF</span>
+                    <div class="stat-bar">
+                        <div id="firmannDefenseBar"></div>
+                    </div>
+                    <span id="firmannDefense">50</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         2D GAME WORLD
+    ================================== -->
+
+    <section id="gameWorld">
+
+        <div class="world-background">
+
+            <div class="background-grid"></div>
+
+            <div class="server server-one"></div>
+            <div class="server server-two"></div>
+            <div class="server server-three"></div>
+
+        </div>
+
+        <div id="gameCamera">
+
+            <div id="phantomCharacter" class="game-character">
+                <div class="character-name">PHANTOM</div>
+                <div class="character-body">
+                    <div class="character-head"></div>
+                    <div class="character-torso"></div>
+                    <div class="character-legs"></div>
+                </div>
+            </div>
+
+            <div id="firmannCharacter"
+                 class="game-character enemy-character hidden">
+
+                <div class="character-name">FIRMANN</div>
+
+                <div class="character-body">
+                    <div class="character-head"></div>
+                    <div class="character-torso"></div>
+                    <div class="character-legs"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MOVEMENT CONTROLS -->
+
+        <div id="movementControls">
+
+            <button id="moveLeft">◀</button>
+            <button id="moveRight">▶</button>
+            <button id="jumpButton">▲</button>
+
+        </div>
+
+        <!-- ACTION EFFECTS -->
+
+        <div id="attackEffects"></div>
+        <div id="screenFlash"></div>
+        <div id="damageOverlay"></div>
+
+    </section>
+
+
+    <!-- =================================
+         DIALOG SYSTEM
+    ================================== -->
+
+    <section id="dialogBox" class="dialog-box hidden">
+
+        <div class="dialog-character">
+            <span id="dialogSpeaker">PHANTOM</span>
+            <span id="dialogChapter">CHAPTER 01</span>
+        </div>
+
+        <div class="dialog-content">
+
+            <div id="dialogAvatar">P</div>
+
+            <div class="dialog-text-container">
+                <p id="dialogText">
+                    System initialized...
+                </p>
+            </div>
+
+        </div>
+
+        <button id="nextDialogBtn">NEXT ▶</button>
+
+    </section>
+
+
+    <!-- =================================
+         MISSION INFORMATION
+    ================================== -->
+
+    <section id="missionPanel">
+
+        <div class="mission-header">
+            <span>MISSION OBJECTIVE</span>
+            <span id="missionProgress">0/5</span>
+        </div>
+
+        <h3 id="missionTitle">FIRST ACCESS</h3>
+
+        <p id="missionDescription">
+            Investigate the simulated server environment.
+        </p>
+
+        <div class="mission-hint">
+
+            <div class="hint-title">
+                <span>▸ SYSTEM HINT</span>
+            </div>
+
+            <p id="missionHint">
+                Gunakan perintah help untuk melihat daftar command.
+            </p>
+
+        </div>
+
+        <div class="command-example">
+
+            <span>COMMAND EXAMPLE</span>
+
+            <code id="commandExample">
+                help
+            </code>
+
+            <button id="copyCommandBtn">COPY</button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         LINUX TERMINAL
+    ================================== -->
+
+    <section id="terminalPanel">
+
+        <div class="terminal-header">
+
+            <div class="terminal-title">
+                <span class="terminal-indicator"></span>
+                PHANTOM LINUX TERMINAL
+            </div>
+
+            <span id="terminalConnection">CONNECTED</span>
+
+        </div>
+
+        <div id="terminalOutput">
+
+            <p class="terminal-system">
+                PHANTOM OS [Version 2.0]
+            </p>
+
+            <p class="terminal-system">
+                Type 'help' to view available commands.
+            </p>
+
+            <p class="terminal-system">
+                All operations are simulated inside the game.
+            </p>
+
+        </div>
+
+        <form id="terminalForm">
+
+            <div class="terminal-input-wrapper">
+
+                <span id="terminalPrompt">
+                    phantom@system:~$
+                </span>
+
+                <input
+                    type="text"
+                    id="terminalInput"
+                    placeholder="Type your command..."
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                >
+
+                <button type="submit" id="executeCommandBtn">
+                    EXECUTE
+                </button>
+
+            </div>
+
+        </form>
+
+        <!-- VIRTUAL KEYBOARD -->
+
+        <div id="virtualKeyboard">
+
+            <div class="keyboard-row">
+                <button data-key="1">1</button>
+                <button data-key="2">2</button>
+                <button data-key="3">3</button>
+                <button data-key="4">4</button>
+                <button data-key="5">5</button>
+                <button data-key="6">6</button>
+                <button data-key="7">7</button>
+                <button data-key="8">8</button>
+                <button data-key="9">9</button>
+                <button data-key="0">0</button>
+            </div>
+
+            <div class="keyboard-row">
+                <button data-key="q">q</button>
+                <button data-key="w">w</button>
+                <button data-key="e">e</button>
+                <button data-key="r">r</button>
+                <button data-key="t">t</button>
+                <button data-key="y">y</button>
+                <button data-key="u">u</button>
+                <button data-key="i">i</button>
+                <button data-key="o">o</button>
+                <button data-key="p">p</button>
+            </div>
+
+            <div class="keyboard-row">
+                <button data-key="a">a</button>
+                <button data-key="s">s</button>
+                <button data-key="d">d</button>
+                <button data-key="f">f</button>
+                <button data-key="g">g</button>
+                <button data-key="h">h</button>
+                <button data-key="j">j</button>
+                <button data-key="k">k</button>
+                <button data-key="l">l</button>
+            </div>
+
+            <div class="keyboard-row">
+                <button data-key="z">z</button>
+                <button data-key="x">x</button>
+                <button data-key="c">c</button>
+                <button data-key="v">v</button>
+                <button data-key="b">b</button>
+                <button data-key="n">n</button>
+                <button data-key="m">m</button>
+                <button data-key="Backspace">⌫</button>
+            </div>
+
+            <div class="keyboard-row">
+                <button data-key=" ">SPACE</button>
+                <button data-key="Enter">ENTER ↵</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         BOSS BATTLE ANNOUNCEMENT
+    ================================== -->
+
+    <div id="bossAnnouncement" class="overlay hidden">
+
+        <div class="boss-announcement-content">
+
+            <p>WARNING: UNKNOWN ENTITY DETECTED</p>
+
+            <h1>FIRMANN</h1>
+
+            <p>FINAL BOSS HAS ARRIVED</p>
+
+            <div class="boss-warning">SYSTEM UNDER ATTACK</div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         PAUSE MENU
+    ================================== -->
+
+    <div id="pauseScreen" class="overlay hidden">
+
+        <div class="panel">
+
+            <h2>GAME PAUSED</h2>
+
+            <button id="resumeGameBtn">RESUME</button>
+            <button id="restartLevelBtn">RESTART LEVEL</button>
+            <button id="exitGameBtn">MAIN MENU</button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         LEVEL COMPLETED
+    ================================== -->
+
+    <div id="levelCompleteScreen" class="overlay hidden">
+
+        <div class="panel">
+
+            <h1>MISSION COMPLETE</h1>
+
+            <p id="levelCompleteText">
+                System successfully analyzed.
+            </p>
+
+            <button id="nextLevelBtn">
+                NEXT LEVEL ▶
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         GAME OVER
+    ================================== -->
+
+    <div id="gameOverScreen" class="overlay hidden">
+
+        <div class="panel">
+
+            <h1>SYSTEM FAILURE</h1>
+
+            <p>Phantom has lost the battle.</p>
+
+            <button id="retryGameBtn">RETRY</button>
+            <button id="gameOverMenuBtn">MAIN MENU</button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         FINAL ENDING
+    ================================== -->
+
+    <div id="endingScreen" class="screen">
+
+        <div class="ending-background"></div>
+
+        <div class="ending-content">
+
+            <div class="ending-symbol">✦</div>
+
+            <p class="ending-subtitle">
+                A SPECIAL MESSAGE
+            </p>
+
+            <h1>SELAMAT HARI GURU</h1>
+
+            <h2>Untuk Pak Danu</h2>
+
+            <div class="ending-divider"></div>
+
+            <p class="ending-message">
+                Game ini dibuat khusus untuk Pak Danu.
+            </p>
+
+            <p class="ending-message">
+                Maaf jika Firman ada salah-salah, Pak, yah.
+            </p>
+
+            <div class="ending-signature">
+                — FIRMANSYAH —
+            </div>
+
+            <div class="chocolate-message">
+                Kapan-kapan ku beliin coklat 🍫
+            </div>
+
+            <p class="ending-footer">
+                THANK YOU FOR BEING OUR TEACHER
+            </p>
+
+            <button id="endingReplayBtn">
+                PLAY AGAIN
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         AUDIO SYSTEM
+    ================================== -->
+
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="assets/audio/background.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="bossMusic" loop preload="auto">
+        <source src="assets/audio/boss.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="keyboardSound" preload="auto">
+        <source src="assets/audio/keyboard.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="attackSound" preload="auto">
+        <source src="assets/audio/attack.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="defenseSound" preload="auto">
+        <source src="assets/audio/defense.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="alarmSound" preload="auto">
+        <source src="assets/audio/alarm.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="victorySound" preload="auto">
+        <source src="assets/audio/victory.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <!-- JAVASCRIPT AKAN DIPASANG PADA TAHAP 3 -->
+
+    <script src="game.js"></script>
+
+</div>
+
+</body>
+</html>
